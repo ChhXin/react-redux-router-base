@@ -12,7 +12,8 @@
   ],
   "plugins": [
     "transform-class-properties", // 解析类属性，静态和实例的属性
-    "transform-object-rest-spread" // 支持对象 rest
+    "transform-object-rest-spread", // 支持对象 rest
+	  ["import", { "libraryName": "antd", "style": "css" }] // `style: true` 会加载 less 文件
   ],
   "env": {
     "beta": {

@@ -2,10 +2,12 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
+import {Button, Tag, message} from 'antd';
 import {hello, clearHello} from './action';
 import {setToast} from '../../common/action/toast';
 import style from './home.scss';
 const cx = classNames.bind(style);
+const ButtonGroup = Button.Group;
 
 export class Home extends Component {
   static propTypes = {
@@ -32,26 +34,58 @@ export class Home extends Component {
     }));
   };
 
+  messageHandle = (type) => {
+    return (e) => {
+      e.stopPropagation();
+
+      switch (type) {
+        case 'success':
+          message.success('This is a message of success');
+          break;
+        case 'error':
+          message.error('This is a message of error');
+          break;
+        case 'warning':
+          message.warning('This is message of warning');
+          break;
+        default:
+          message.info('This is a normal message');
+      }
+    };
+  };
+
   render() {
     const {home} = this.props;
     return (
       <div className={style.home}>
-        <h1 className="mt-3">
-          React Redux Router Immutable Webpack Less etc.
-        </h1>
-        <hr className="mt-2 mb-2"/>
+        <h1 className="mt-3 mb-1">React Redux Router 脚手架</h1>
+        <p>
+          <Tag color="pink">React</Tag>
+          <Tag color="orange">Redux</Tag>
+          <Tag color="red">Router</Tag>
+          <Tag color="cyan">Immutable</Tag>
+          <Tag color="purple">Webpack</Tag>
+          <Tag color="blue">Less</Tag>
+          etc.
+        </p>
+        <hr className="mt-2 mb-2" style={{opacity: '0.4'}}/>
         <div>
           <h3 className="mb-1">{home.get('content')}</h3>
-          <div className={style['btn-group']}>
-            <button className={cx('btn', 'btn-info')}
-                    onClick={this.helloHandle()}>欢迎您来到这里
-            </button>
-            <button className={cx('btn', 'btn-info')}
-                    onClick={this.helloHandle(true)}>悄悄的离开
-            </button>
-            <button className={cx('btn', 'btn-primary')}
-                    onClick={this.toastHandle}>Toast
-            </button>
+          <div>
+            <ButtonGroup className="mr-1">
+              <Button icon="smile-o" onClick={this.helloHandle()}>欢迎您来到这里</Button>
+              <Button icon="frown-o" onClick={this.helloHandle(true)}>悄悄的离开</Button>
+            </ButtonGroup>
+            <Button className="mr-1" type="primary" onClick={this.toastHandle}>Toast</Button>
+            <br />
+            <br />
+            <ButtonGroup>antd message:
+              <Button onClick={this.messageHandle()}>Info</Button>
+              <Button onClick={this.messageHandle('success')}>Success</Button>
+              <Button onClick={this.messageHandle('error')}>Error</Button>
+              <Button onClick={this.messageHandle('warning')}>Warning</Button>
+            </ButtonGroup>
+
           </div>
         </div>
       </div>

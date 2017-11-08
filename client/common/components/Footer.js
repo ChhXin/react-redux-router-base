@@ -1,15 +1,23 @@
 import React from 'react';
+import { Layout } from 'antd';
+const { Footer } = Layout;
 
-const Footer = () => {
+const Module = () => {
   return (
-    <footer className="footer-assist">
-      <div className="footer">
-        <div className="container">
-          <p className="copyright">Copyright &copy; 2016-2017 joy-web</p>
-        </div>
-      </div>
-    </footer>
+    <Footer style={{ textAlign: 'center' }}>
+      Copyright &copy; 2016-2017 joy-web
+    </Footer>
   );
+
+  // return (
+  //   <footer className="footer-assist">
+  //     <div className="footer">
+  //       <div className="container">
+  //         <p className="copyright">Copyright &copy; 2016-2017 joy-web</p>
+  //       </div>
+  //     </div>
+  //   </footer>
+  // );
 };
 
-export default Footer;
+export default Module;

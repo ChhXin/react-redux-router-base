@@ -25,6 +25,7 @@
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100 npm test"
   },
   "dependencies": {
+    "antd": "^2.13.9",
     "body-parser": "^1.18.2",
     "classnames": "^2.2.5",
     "compression": "^1.7.1",
@@ -60,6 +61,7 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
     "babel-loader": "^7.1.2",
+    "babel-plugin-import": "^1.6.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.10",

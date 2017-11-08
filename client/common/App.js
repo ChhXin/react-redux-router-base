@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import Header from './components/Header'
-import Footer from './components/Footer';
+import HeaderModule from './components/Header'
+import FooterModule from './components/Footer';
+import SideBar from './components/sideBar/SideBar';
 import {clearToast} from './action/toast';
+
+import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+const { Content, Sider } = Layout;
 
 export class App extends Component {
 
@@ -57,20 +61,46 @@ export class App extends Component {
       children
     } = this.props;
 
+    const contentStyle = {
+      minHeight: `${window.innerHeight - 120}px`,
+      width: '90%',
+      background: '#fff',
+      overflow: 'auto'
+    };
+
+    // return (
+    //   <div className="main">
+    //     {this.renderToast()}
+    //     <Header />
+    //     {children}
+    //     <Footer />
+    //   </div>
+    // );
+
     return (
-      <div className="main">
+      <Layout>
         {this.renderToast()}
-        <Header />
-        {children}
-        <Footer />
-      </div>
+        <HeaderModule/>
+        <Content style={{ padding: '20px', boxShadow: '0 0 5px #ccc' }}>
+          <Layout style={{ background: '#fff' }}>
+            <Sider width={200} style={{ background: '#fff', borderRight: 'solid 1px #e9e9e9' }}>
+              <SideBar />
+            </Sider>
+            <Content style={contentStyle}>
+              {children}
+            </Content>
+          </Layout>
+        </Content>
+        <FooterModule />
+      </Layout>
     );
+
   }
 }
 
 function mapStateToProps(state) {
   return {
-    toast: state.get('toast')
+    toast: state.get('toast'),
   };
 }
 
