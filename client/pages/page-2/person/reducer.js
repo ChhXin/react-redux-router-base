@@ -55,6 +55,15 @@ function person(state = fromJS({
         })
       });
     }
+    case 'person-editing': {
+      const {key} = action;
+      const paging = state.get('paging');
+      return paging.updateIn(['items'], items => {
+        if (items.get('id') === key) {
+          items.set('editable', true);
+        }
+      });
+    }
     case 'person-add': {
       const {person} = action;
       const paging = state.get('paging');

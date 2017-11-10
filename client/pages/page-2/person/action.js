@@ -26,7 +26,7 @@ function fetchPersonFailure(error) {
   };
 }
 
-function fetchPersonList(pageNum = 1, clear) {
+function fetchPersonList(pageNum = 1, clear, callBack) {
   return (dispatch, getState) => {
     callApi({
       url: `page-2/person?pageNum=${pageNum}`,
@@ -35,7 +35,9 @@ function fetchPersonList(pageNum = 1, clear) {
       if (!json) {
         return dispatch(fetchPersonFailure('请求失败'));
       }
-
+      if (callBack) {
+        callBack(data);
+      }
       return dispatch(fetchPersonSuccess(data, clear));
     }, (error) => {
       const message = errorHandler(error);
@@ -44,7 +46,7 @@ function fetchPersonList(pageNum = 1, clear) {
   };
 }
 
-export function getPersonList(clear) {
+export function getPersonList(clear, callBack) {
   return (dispatch, getState) => {
     const person = getState().get('person');
     const isFetching = person.get('isFetching');
@@ -58,7 +60,7 @@ export function getPersonList(clear) {
       return null;
     }
     dispatch(fetchPersonRequest());
-    return dispatch(fetchPersonList(pageNum, clear));
+    return dispatch(fetchPersonList(pageNum, clear, callBack));
   };
 }
 

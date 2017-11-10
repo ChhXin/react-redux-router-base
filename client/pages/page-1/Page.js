@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Link} from 'react-router';
+import { Menu, Icon } from 'antd';
 
 class Page extends Component {
   static propTypes = {
@@ -16,6 +17,10 @@ class Page extends Component {
     dispatch: PropTypes.func
   };
 
+  state = {
+    current: 'module1',
+  };
+
   /**
    * 注意：在子组件中使用 context 的值，不要修改，只能使用或调用
    * Updating Context
@@ -25,6 +30,26 @@ class Page extends Component {
     const {dispatch} = this.props;
     return {dispatch};
   }
+
+  componentDidMount() {
+    const {pathname} = location;
+    if (pathname.indexOf('/page1/module2') !== -1) {
+      this.setMenuKey('module2');
+    } else {
+      this.setMenuKey('module1');
+    }
+  }
+
+  setMenuKey = (key) => {
+    this.setState({
+      current: key,
+    });
+  };
+
+  handleClick = (e) => {
+    console.log('click ', e.key);
+    this.setMenuKey(e.key);
+  };
 
   render() {
     const {
@@ -38,14 +63,18 @@ class Page extends Component {
 
     return (
       <div className="container mt-1">
-        <ul className="nav nav-tabs mb-2">
-          <li className="nav-item">
-            <Link className="nav-link" activeClassName="active" to="/module1">Module1</Link>
-          </li>
-          <li className="nav-item">
-            <Link className="nav-link" activeClassName="active" to="/module2">Module2</Link>
-          </li>
-        </ul>
+        <Menu
+          onClick={this.handleClick}
+          selectedKeys={[this.state.current]}
+          mode="horizontal"
+        >
+          <Menu.Item key="module1">
+            <Link to="/module1">Module1</Link>
+          </Menu.Item>
+          <Menu.Item key="module2">
+            <Link to="/module2">Module2</Link>
+          </Menu.Item>
+        </Menu>
 
         {children && React.cloneElement(children, props)}
       </div>

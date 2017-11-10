@@ -2,17 +2,18 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import classNames from 'classnames/bind';
-import {Button, Tag, message} from 'antd';
+import {Button, Tag, message, Row, Col, Card, Tooltip} from 'antd';
 import {hello, clearHello} from './action';
 import {setToast} from '../../common/action/toast';
 import style from './home.scss';
+
 const cx = classNames.bind(style);
 const ButtonGroup = Button.Group;
 
 export class Home extends Component {
   static propTypes = {
     home: PropTypes.object,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
   };
 
   helloHandle = (clear) => {
@@ -30,7 +31,7 @@ export class Home extends Component {
   toastHandle = (e) => {
     e.stopPropagation();
     this.props.dispatch(setToast({
-      content: '你好，这是一个 Toast，来体验 React 的美妙之处吧。希望能给你带去快乐！'
+      content: '你好，这是一个 Toast，来体验 React 的美妙之处吧。希望能给你带去快乐！',
     }));
   };
 
@@ -59,7 +60,7 @@ export class Home extends Component {
     return (
       <div className={style.home}>
         <h1 className="mt-3 mb-1">React Redux Router 脚手架</h1>
-        <p>
+        <div>
           <Tag color="pink">React</Tag>
           <Tag color="orange">Redux</Tag>
           <Tag color="red">Router</Tag>
@@ -67,7 +68,7 @@ export class Home extends Component {
           <Tag color="purple">Webpack</Tag>
           <Tag color="blue">Less</Tag>
           etc.
-        </p>
+        </div>
         <hr className="mt-2 mb-2" style={{opacity: '0.4'}}/>
         <div>
           <h3 className="mb-1">{home.get('content')}</h3>
@@ -76,18 +77,23 @@ export class Home extends Component {
               <Button icon="smile-o" onClick={this.helloHandle()}>欢迎您来到这里</Button>
               <Button icon="frown-o" onClick={this.helloHandle(true)}>悄悄的离开</Button>
             </ButtonGroup>
-            <Button className="mr-1" type="primary" onClick={this.toastHandle}>Toast</Button>
-            <br />
-            <br />
-            <ButtonGroup>antd message:
-              <Button onClick={this.messageHandle()}>Info</Button>
-              <Button onClick={this.messageHandle('success')}>Success</Button>
-              <Button onClick={this.messageHandle('error')}>Error</Button>
-              <Button onClick={this.messageHandle('warning')}>Warning</Button>
-            </ButtonGroup>
-
+            <Tooltip title="click me to show a toast">
+              <Button className="mr-1" type="primary" onClick={this.toastHandle}>Toast</Button>
+            </Tooltip>
           </div>
         </div>
+        <Row type="flex" justify="space-around" align="top" className="mt-1">
+          <Col span={5} style={{ width: 400 }}>
+            <Card title="Antd Message">
+              <ButtonGroup>
+                <Button onClick={this.messageHandle()}>Info</Button>
+                <Button onClick={this.messageHandle('success')}>Success</Button>
+                <Button onClick={this.messageHandle('error')}>Error</Button>
+                <Button onClick={this.messageHandle('warning')}>Warning</Button>
+              </ButtonGroup>
+            </Card>
+          </Col>
+        </Row>
       </div>
     );
   }
@@ -95,9 +101,8 @@ export class Home extends Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    home: state.get('home')
+    home: state.get('home'),
   };
 }
-
 
 export default connect(mapStateToProps)(Home);

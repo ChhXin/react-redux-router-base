@@ -32,6 +32,7 @@ class SideBar extends Component {
 
   handleClick = (e) => {
     console.log('click ', e.key);
+    this.setMenuKey(e.key);
   };
 
   render() {

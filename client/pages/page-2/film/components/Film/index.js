@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Immutable from 'immutable';
 import classNames from 'classnames';
+import { Tabs, Icon } from 'antd';
+const TabPane = Tabs.TabPane;
 import {getFilmList} from '../../action';
 import {setCache} from '../../../../../common/action/caches';
 import FilmList from '../FilmList';
@@ -20,7 +22,7 @@ class Film extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeTab: 'all'
+      activeTab: 'all',
     };
 
     this.name = '';
@@ -38,6 +40,12 @@ class Film extends Component {
     return this.state.activeTab !== nextState.activeTab
       || !Immutable.is(this.props.film, nextProps.film);
   }
+
+  handleModeChange = (key) => {
+    // const mode = e.target.value;
+    console.log('change to ', key);
+    this.switchTab(key)();
+  };
 
   switchTab = (type) => {
     return (event) => {
@@ -76,36 +84,53 @@ class Film extends Component {
     }
     const transitionName = this.animations[index];
 
+    return (
+      <div className="nav-tabs" style={{margin: '20px'}}>
+        <Tabs
+          defaultActiveKey="1"
+          tabPosition="top"
+          onChange={this.handleModeChange}
+          size="small"
+        >
+          <TabPane tab="全部" key="all">
+            <FilmList film={film} activeTab={'all'}/>
+          </TabPane>
+          <TabPane tab="人气" key="popularity">
+            <FilmList film={film} activeTab={'popularity'}/>
+          </TabPane>
+        </Tabs>
+      </div>
+    );
     /**
      * react 动画结合 css Module，解决的方法有两种，利用 :global 设置全局 css
      * 指定 transitionName 为 对象 Object prop。详见
      * https://github.com/css-modules/css-modules/issues/84
      */
-    return (
-      <div>
-        <ul className="nav nav-pills">
-          <li className="nav-item">
-            <a className={classNames('nav-link', activeTab === 'all' ? 'active' : '')}
-               onClick={this.switchTab('all')} href="#">全部</a>
-          </li>
-          <li className="nav-item">
-            <a className={classNames('nav-link', activeTab === 'popularity' ? 'active' : '')}
-               onClick={this.switchTab('popularity')} href="#">人气</a>
-          </li>
-        </ul>
-
-        <TransitionGroup>
-          <CSSTransition key={activeTab}
-                         in={activeTab === 'popularity'}
-                         classNames={transitionName}
-                         timeout={{exit: 500, enter: 500}}>
-            <div className="mt-1">
-              <FilmList film={film} activeTab={activeTab}/>
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
-      </div>
-    );
+    // return (
+    //   <div>
+    //     <ul className="nav nav-pills">
+    //       <li className="nav-item">
+    //         <a className={classNames('nav-link', activeTab === 'all' ? 'active' : '')}
+    //            onClick={this.switchTab('all')} href="#">全部</a>
+    //       </li>
+    //       <li className="nav-item">
+    //         <a className={classNames('nav-link', activeTab === 'popularity' ? 'active' : '')}
+    //            onClick={this.switchTab('popularity')} href="#">人气</a>
+    //       </li>
+    //     </ul>
+    //
+    //     <TransitionGroup>
+    //       <CSSTransition key={activeTab}
+    //                      in={activeTab === 'popularity'}
+    //                      classNames={transitionName}
+    //                      timeout={{exit: 500, enter: 500}}>
+    //         <div className="mt-1">
+    //           <FilmList film={film} activeTab={activeTab}/>
+    //         </div>
+    //       </CSSTransition>
+    //     </TransitionGroup>
+    //   </div>
+    // );
   }
 }
 
