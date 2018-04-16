@@ -4,6 +4,10 @@
 * 引入简化版 immutable.js
 * 优化redux使用模式
 
+## version 0.10.1 (2018-04-16)
+
+* Webpack 降级到 3.x
+
 ## version 0.10.0 (2018-04-08)
 
 * Webpack 升级到 4.x 升级参考以下文章

@@ -65,6 +65,7 @@ function scssConfig(modules) {
         minimize: true,
         localIdentName: '[local][contenthash:base64:5]',
         getLocalIdent: (context, localIdentName, localName) => {
+          // FIXME 这样每次打包编译时，混淆的 css 名导致无法缓存，待解决实现
           return generateScopedName(localName, context.resourcePath);
         },
       } : {
@@ -103,18 +104,17 @@ function scssConfig(modules) {
 
 // multiple extract instances
 const extractScss = new ExtractTextPlugin({
-  filename: 'css/[name].[chunkhash:8].css',
+  filename: 'css/[name].[contenthash:8].css',
   allChunks: true,
   ignoreOrder: true,
 });
 const extractCSS = new ExtractTextPlugin({
-  filename: 'css/style.[name].[chunkhash:8].css',
+  filename: 'css/style.[name].[contenthash:8].css',
   allChunks: true,
 });
 
 // 基于 webpack 的持久化缓存方案 可以参考 https://github.com/pigcan/blog/issues/9
 const webpackConfig = {
-  mode: 'production',
   devtool: 'source-map', // 生成 source-map文件 原始源码
   target: 'web', // webpack 能够为多种环境构建编译, 默认是 'web'，可省略 https://doc.webpack-china.org/configuration/target/
   resolve: {
@@ -254,41 +254,42 @@ const webpackConfig = {
     ],
   },
 
-  // webpack 选项配置
-  optimization: {
-    noEmitOnErrors: true, // 在编译出现错误时，用来跳过输出阶段
-    occurrenceOrder: true, // Webpack将会用更短的名字去命名引用频度更高的chunk
-    sideEffects: false,
-    minimize: true,
-    concatenateModules: true, // Scope Hoisting-作用域提升
-    // splitChunks: {
-    //   cacheGroups: {
-    //     vendor: {
-    //       // test: /node_modules/, // 指定文件夹
-    //       name: 'vendor',
-    //       chunks: 'all',
-    //     },
-    //   },
-    // },
-    runtimeChunk: {
-      name: 'manifest',
-    },
-    namedChunks: true,
-  },
-
   plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
     // 用来优化生成的代码 chunk，合并相同的代码
     new webpack.optimize.AggressiveMergingPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin({// Scope Hoisting-作用域提升
+      // 检查所有的模块
+      maxModules: Infinity,
+      // 将显示绑定失败的原因
+      optimizationBailout: true,
+    }),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
     extractScss,
-    // extractCSS,
+    extractCSS,
+    // 以下两个插件可以解决持久化缓存，但由于用到了模块化，混淆的 css 名导致无法缓存
+    // 故先注释掉，待后续解决了，再打开，或者不使用 css Module 时
     new webpack.HashedModuleIdsPlugin(),
+    new webpack.NamedChunksPlugin(),
+    // https://doc.webpack-china.org/guides/code-splitting-libraries/#manifest-
+    new webpack.optimize.CommonsChunkPlugin('vendor'),
     new ManifestPlugin({
       basePath: `${urlContext}/dist/`,
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: true,
+      compressor: {
+        warnings: false,
+        /* eslint-disable camelcase */
+        drop_console: process.env.NODE_ENV === 'production', // 只有正式环境去掉 console
+      },
+      mangle: {
+        except: [], // 设置不混淆变量名
+      },
     }),
     new webpack.BannerPlugin({
       banner: [
@@ -299,6 +300,12 @@ const webpackConfig = {
       ].join('\n'),
       raw: true,
       entryOnly: true,
+    }),
+    new webpack.LoaderOptionsPlugin({
+      /* UglifyJsPlugin 不再压缩 loaders。在未来很长一段时间里，需要通过设置 minimize:true 来压缩 loaders。
+       loaders 的压缩模式将在 webpack 3 或后续版本中取消。
+       为了兼容旧的 loaders，loaders 可以通过插件来切换到压缩模式： */
+      minimize: true,
     }),
   ],
 };

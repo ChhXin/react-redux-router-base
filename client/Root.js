@@ -38,8 +38,9 @@ if (process.env.NODE_ENV === 'development') {
   );
 
   // 引入 eruda
-  import('eruda')
-    .then(eruda => eruda.init());
+  require('eruda').init();
+  // import('eruda')
+  //   .then(eruda => eruda.init());
 }
 
 /**

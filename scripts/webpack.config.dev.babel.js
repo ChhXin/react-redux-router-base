@@ -71,7 +71,6 @@ function scssConfig(modules) {
 }
 
 const webpackConfig = {
-  mode: 'development',
   cache: true, // 开启缓存,增量编译
   devtool: 'eval-source-map', // 生成 source map文件
   target: 'web', // webpack 能够为多种环境构建编译, 默认是 'web'，可省略 https://doc.webpack-china.org/configuration/target/
@@ -122,8 +121,7 @@ const webpackConfig = {
       },
       {
         test: /\.js$/,
-        // include: /client|node_modules\/redux/,
-        exclude: /node_modules/,
+        include: /client/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -209,12 +207,23 @@ const webpackConfig = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // 热部署替换模块
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin({ // Scope Hoisting-作用域提升
+      // 检查所有的模块
+      maxModules: Infinity,
+      // 将显示绑定失败的原因
+      optimizationBailout: true
+    }),
+    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('development'),
       },
     }),
-  ],
+    new webpack.LoaderOptionsPlugin({
+      debug: true,
+    })
+  ]
 };
 
 if (dllExist) {
