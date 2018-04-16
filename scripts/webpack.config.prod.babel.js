@@ -55,7 +55,7 @@ const generateScopedName = (localName, resourcePath) => {
 // scss config
 function scssConfig(modules) {
   // 在 css-loader 中加入 sourceMap: true，可能会引起编译报错，比如 content: $font; 会编译报错
-  return ExtractTextPlugin.extract({
+  return extractScss.extract({
     fallback: 'style-loader',
     use: [{
       loader: 'css-loader',
@@ -209,7 +209,7 @@ const webpackConfig = {
       // css 一般都是从第三方库中引入，故不需要 CSS 模块化处理
       {
         test: /\.css/,
-        use: ExtractTextPlugin.extract({
+        use: extractCSS.extract({
           fallback: 'style-loader',
           use: [{
             loader: 'css-loader',
