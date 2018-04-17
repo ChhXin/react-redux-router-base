@@ -73,10 +73,6 @@ function scssConfig(modules) {
         minimize: true,
       },
     }, {
-      // Webpack loader that resolves relative paths in url() statements
-      // based on the original source file
-      loader: 'resolve-url-loader',
-    }, {
       loader: 'postcss-loader',
       options: {
         sourceMap: true,
@@ -91,6 +87,10 @@ function scssConfig(modules) {
           }),
         ],
       },
+    }, {
+      // Webpack loader that resolves relative paths in url() statements
+      // based on the original source file
+      loader: 'resolve-url-loader',
     }, {
       loader: 'sass-loader-joy-vendor', options: {
         sourceMap: true, // 必须保留
@@ -218,10 +218,6 @@ const webpackConfig = {
               minimize: true,
             },
           }, {
-            // Webpack loader that resolves relative paths in url() statements
-            // based on the original source file
-            loader: 'resolve-url-loader',
-          }, {
             loader: 'postcss-loader',
             options: {
               sourceMap: true,
@@ -236,6 +232,10 @@ const webpackConfig = {
                 }),
               ],
             },
+          }, {
+            // Webpack loader that resolves relative paths in url() statements
+            // based on the original source file
+            loader: 'resolve-url-loader',
           }],
           // publicPath: '/public/dist/' 这里如设置会覆盖 output 中的 publicPath
         }),

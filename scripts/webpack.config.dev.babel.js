@@ -40,10 +40,6 @@ function scssConfig(modules) {
       sourceMap: true,
     },
   }, {
-    // Webpack loader that resolves relative paths in url() statements
-    // based on the original source file
-    loader: 'resolve-url-loader',
-  }, {
     loader: 'postcss-loader',
     options: {
       sourceMap: true,
@@ -59,6 +55,10 @@ function scssConfig(modules) {
         }),
       ],
     },
+  }, {
+    // Webpack loader that resolves relative paths in url() statements
+    // based on the original source file
+    loader: 'resolve-url-loader',
   }, {
     loader: 'sass-loader-joy-vendor',
     options: {

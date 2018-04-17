@@ -24,7 +24,7 @@
     "test": "nyc node node_modules/.bin/ava",
     "test-watch": "npm run test -- --watch",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100 npm test",
-    "build-analyzer": "webpack --progress --colors --config webpack.build.babel.js --profile --json > stats.json",
+    "build-analyzer": "webpack --progress --colors --config ./scripts/webpack.build.babel.js --profile --json > stats.json",
     "analyzer": "webpack-bundle-analyzer ./stats.json ./public/dist/"
   },
   "dependencies": {
