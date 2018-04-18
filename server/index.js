@@ -1,6 +1,20 @@
 /**
  * 入口文件
  */
+require('babel-register')({
+  plugins: [
+    [
+      'babel-plugin-webpack-loaders',
+      {
+        config: './scripts/webpack.config.dev.babel.js',
+        verbose: false
+      }
+    ]
+  ]
+});
+
+require('babel-polyfill');
+
 const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');

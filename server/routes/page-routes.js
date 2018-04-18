@@ -7,12 +7,13 @@ const serialize = require('serialize-javascript');
 const handlebars = require('handlebars');
 const logger = require('../helper/my-logger').Logger;
 const {urlContext, nodeEnv} = require('../config');
+const serverRender = require('./server-render');
 
 // services
 const isDev = nodeEnv === 'development';
 
 // 加载webpack打包后的静态文件映射表
-const fileManifest = isDev ? null : require('../../public/dist/manifest.json');
+const fileManifest = null; // : require('../../public/dist/manifest.json');
 
 // 静态文件上下文路径
 const staticResourceContext = `${urlContext}/dist/`;
@@ -91,6 +92,15 @@ const wrapScriptImports = function (data, isDev, manifest) {
         ${buildScript(manifest[`${staticResourceContext}${data.name}.js`])}`;
   }
 };
+
+/**
+ * 构建服务端渲染
+ * @param data
+ */
+const wrapServerRender = function (data, req) {
+  data.frontComponents = serverRender(req, data.name);
+};
+
 /**
  * 设置通用的响应头,页面不缓存！！
  * @param response
@@ -119,6 +129,7 @@ const renderTemplateSync = function (request, response, data) {
   wrapScriptHtml(data);
   wrapStyleImports(data, isDev, fileManifest);
   wrapScriptImports(data, isDev, fileManifest);
+  wrapServerRender(data, request);
   // 环境
   data.isProd = process.env.NODE_ENV === 'production';
   /*
