@@ -7,7 +7,7 @@ const Header = () => {
 
   return (
     <header className="navbar navbar-expand navbar-primary navbar-top flex-column flex-sm-row">
-      <a className="navbar-brand" href="#">React+Redux+Router</a>
+      <a className="navbar-brand" href={`${urlContext}/home`}>React+Redux+Router</a>
       <div className="navbar-scroll">
         <ul className="navbar-nav">
           <li>
