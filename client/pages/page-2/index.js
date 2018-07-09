@@ -1,21 +1,37 @@
 import React from 'react';
-import {render} from 'react-dom';
-import {Route} from 'react-router-dom';
-import Root from '../../Root';
-import reducers from './reducers';
-import {urlContext} from '../../utils/config';
+import PropTypes from 'prop-types';
+import {Link, BrowserRouter, Route, Switch, Redirect} from 'dva/router';
+import Loadable from 'react-loadable';
 import App from '../../common/App';
-import Page from './Page';
+import {URL_CONTEXT} from '../../../common/constants';
+import models from './models';
 
-const container = () => {
+import Root from '../../Root';
+import LoadingComponent from '../../components/LoadingComponent';
+
+const basename = `${URL_CONTEXT}/page2/`;
+
+const Container = ({history, location}) => {
   return (
-    <App>
-      <Route path="/" component={Page}/>
-    </App>
+    <BrowserRouter basename={basename}>
+      <App>
+        <Switch location={location}>
+          <Route
+            path="/person"
+            component={Loadable({
+              loader: () => import('./person/components/Person'),
+              loading: LoadingComponent,
+            })}
+          />
+        </Switch>
+      </App>
+    </BrowserRouter>
   );
 };
 
-render(
-  <Root container={container} reducers={reducers} basename={`${urlContext}/page2`}/>,
-  document.getElementById('layout')
-);
+Container.propTypes = {
+  history: PropTypes.object,
+  location: PropTypes.object,
+};
+
+Root({models, Container});
