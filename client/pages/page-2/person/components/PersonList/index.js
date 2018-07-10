@@ -23,8 +23,12 @@ export default class PersonList extends Component {
   };
 
   componentWillMount() {
-    const {dispatch} = this.props;
-    dispatch({type: 'person/getPersonList'});
+    const {person, dispatch} = this.props;
+    // 如果第一次加载列表
+    const items = person.get('items');
+    if (items.size === 0) {
+      dispatch({type: 'person/getPersonList'});
+    }
   }
 
   // 加载更多
@@ -32,7 +36,7 @@ export default class PersonList extends Component {
     const {person, dispatch} = this.props;
     // const {dispatch} = this.props;
     // const isFetching = loading.get('isFetching');
-    const pageNum = person.get('paging');
+    const pageNum = person.get('pageNum');
     const totalPages = person.get('totalPages');
     // const lastPage = paging.get('lastPage');
     if (pageNum < totalPages) {
@@ -57,7 +61,7 @@ export default class PersonList extends Component {
 
     const items = person.get('items');
 
-    if (items.length === 0) {
+    if (items.size === 0) {
       return (
         <div className={cx('no-items')}>
           <div className={cx('no-items-icon')}/>

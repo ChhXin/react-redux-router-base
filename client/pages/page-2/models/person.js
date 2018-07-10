@@ -39,7 +39,7 @@ export default {
       }
     ) {
       const {pageNum, items} = data;
-      return state.items.concat(fromJS(items)).setIn(['pageNum'], pageNum);// { ...state, ...data, items };
+      return state.update('items', _oldItems => _oldItems.concat(fromJS(items))).setIn(['pageNum'], pageNum)
     },
     // 清空/初始化数据
     clearPersonList(state) {
@@ -62,20 +62,20 @@ export default {
     deletePerson(
       state,
       {
-        payload: { pageSize },
+        payload: { id },
       }
     ) {
-      return { ...state, pageSize };
+      return state.update('items', _oldItems => _oldItems.filter(item => item.get('id') !== id))
     },
 
     // 添加一列
     addPerson(
       state,
       {
-        payload: { pageSize },
+        payload: { person },
       }
     ) {
-      return { ...state, pageSize };
+      return state.update('items', (items) => items.unshift(fromJS(person)));
     },
   },
   effects: {

@@ -77,7 +77,11 @@ class PersonItem extends Component {
         }, method: 'delete'
       }).then(
         (json) => {
-          dispatch(deletePerson(id));
+          // dispatch(deletePerson(id));
+          dispatch({
+            type: 'person/deletePerson',
+            payload: { id },
+          });
         },
         (error) => {
 
