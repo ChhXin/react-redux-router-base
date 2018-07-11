@@ -1,34 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'dva';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Common from './components/Common';
 
-import { webLog, webView } from '../utils/ping';
-import '../scss/index.scss';
-
-class App extends React.Component {
+class App extends Component {
   static propTypes = {
     children: PropTypes.node,
-    dispatch: PropTypes.func,
   };
-
-  static childContextTypes = {
-    dispatch: PropTypes.func,
-    webLog: PropTypes.func,
-    webView: PropTypes.func,
-  };
-
-  /**
-   * 注意：在子组件中使用 context 的值，不要修改，只能使用或调用
-   * Updating Context
-   * Don't do Updating Context.
-   */
-  getChildContext() {
-    const { dispatch } = this.props;
-
-    return { dispatch, webLog, webView };
-  }
 
   // React 16 新增方法，用来处理错误边界，可以捕获整个子组件树内发生的任何异常
   componentDidCatch(error, errorInfo) {
@@ -38,17 +17,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { children } = this.props;
-
     return (
       <div>
-        <Header/>
-        {children}
-        <Footer/>
+        <Header />
+        {this.props.children}
+        <Footer />
+        <Common />
       </div>
     );
   }
 }
 
-export default connect()(App);
-
+export default App;
