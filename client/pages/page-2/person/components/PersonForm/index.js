@@ -42,7 +42,10 @@ export default class PersonForm extends Component {
           firstName,
           lastName,
         };
-        dispatch(addPerson(person));
+        dispatch({
+          type: 'person/addPerson',
+          payload: { person },
+        });
         router.history.goBack();
       },
       (error) => {
