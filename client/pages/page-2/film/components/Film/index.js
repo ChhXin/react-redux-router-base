@@ -1,22 +1,21 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+// import {connect} from 'react-redux';
+import { connect } from 'dva';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Immutable from 'immutable';
 import classNames from 'classnames';
-import {getFilmList} from '../../action';
-import {setCache} from '../../../../../common/action/caches';
+// import {getFilmList} from '../../action';
+// import {setCache} from '../../../../../common/action/caches';
 import FilmList from '../FilmList';
 
 // 采用装饰器处理
 @connect(state => ({
-  film: state.get('film'),
-  caches: state.get('film'),
+  film: state.film,
 }))
 export class Film extends Component {
   static propTypes = {
     film: PropTypes.object,
-    caches: PropTypes.object,
     dispatch: PropTypes.func,
   };
 
@@ -48,16 +47,23 @@ export class Film extends Component {
         event.preventDefault();
         event.stopPropagation();
       }
-      const {caches, dispatch} = this.props;
+      const {dispatch} = this.props; // caches,
 
       this.setState({
         activeTab: type
       });
 
-      if (!caches[`film-${type}`]) {
-        dispatch(getFilmList(type));
-        dispatch(setCache(`film-${type}`));
-      }
+      // dispatch(getFilmList(type));
+      dispatch({
+        type: 'film/getFilmList',
+        payload: { type },
+      });
+
+
+      // if (!caches[`film-${type}`]) {
+      //   dispatch(getFilmList(type));
+      //   dispatch(setCache(`film-${type}`));
+      // }
     };
   };
 

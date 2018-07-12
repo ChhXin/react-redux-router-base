@@ -9,3 +9,10 @@ export function person({ body = {} }) {
     },
   });
 }
+
+export function film({ body = {} }) {
+  const {type} = body;
+  return callApiWithHeader({
+    url: `page-2/film/${type}`,
+  });
+}
