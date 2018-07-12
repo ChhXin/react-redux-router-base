@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import { connect } from 'dva';
-import callApiWithHeader from '../../../../../utils/fetch';
 
 import style from './style.scss';
 
