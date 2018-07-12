@@ -12,7 +12,7 @@ const cx = classNames.bind(style);
 // 采用装饰器处理
 @connect(state => ({
   person: state.person,
-  loading: state.loading.models.person || false,
+  loading: state.loading.effects['person/getPersonList'] || false,
 }))
 export default class PersonList extends Component {
   static propTypes = {
