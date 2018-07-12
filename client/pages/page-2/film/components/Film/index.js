@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-// import {connect} from 'react-redux';
 import { connect } from 'dva';
 import {CSSTransition, TransitionGroup} from 'react-transition-group';
 import Immutable from 'immutable';
 import classNames from 'classnames';
-// import {getFilmList} from '../../action';
-// import {setCache} from '../../../../../common/action/caches';
 import FilmList from '../FilmList';
 
 // 采用装饰器处理
@@ -53,7 +50,6 @@ export class Film extends Component {
         activeTab: type
       });
 
-      // dispatch(getFilmList(type));
       dispatch({
         type: 'film/getFilmList',
         payload: { type },

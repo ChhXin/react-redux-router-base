@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import callApi from '../../../../../utils/fetch';
-import {updatePerson, deletePerson} from '../../action';
+import { connect } from 'dva';
+import callApiWithHeader from '../../../../../utils/fetch';
 import classNames from 'classnames/bind';
 import style from './style.scss';
 const cx = classNames.bind(style);
-
+@connect()
 class PersonItem extends Component {
   static propTypes = {
-    person: PropTypes.object.isRequired
-  };
-
-  static contextTypes = {
+    person: PropTypes.object.isRequired,
     dispatch: PropTypes.func,
   };
 
@@ -45,19 +42,23 @@ class PersonItem extends Component {
   // 保存
   handleSave = (e) => {
     e.preventDefault();
-    const {dispatch} = this.context;
+    const {dispatch} = this.props;
     const url = 'page-2/person';
     const body = this.state.person.toJSON();
 
-    return callApi({
+    return callApiWithHeader({
       url, body, method: 'post'
     }).then(
       (json) => {
-        dispatch(updatePerson(this.state.person));
+        const {person} = this.state;
+        dispatch({
+          type: 'person/updatePerson',
+          payload: { person },
+        })
         this.setState({
           editing: false
         }, () => {
-          this.personDefault = this.state.person;
+          this.personDefault = person;
         });
       },
       (error) => {
@@ -68,16 +69,15 @@ class PersonItem extends Component {
   handleDelete = (id) => {
     return (e) => {
       e.preventDefault();
-      const {dispatch} = this.context;
+      const {dispatch} = this.props;
       const url = 'page-2/person';
-      return callApi({
+      return callApiWithHeader({
         url,
         body: {
           id
         }, method: 'delete'
       }).then(
         (json) => {
-          // dispatch(deletePerson(id));
           dispatch({
             type: 'person/deletePerson',
             payload: { id },

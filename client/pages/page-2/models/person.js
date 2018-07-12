@@ -52,10 +52,15 @@ export default {
     updatePerson(
       state,
       {
-        payload: { pageSize },
+        payload: { person },
       }
     ) {
-      return { ...state, pageSize };
+      return state.update('items', _oldItems => _oldItems.map((item) => {
+        if (item.get('id') === person.get('id')) {
+          return person;
+        }
+        return item;
+      }));
     },
 
     // 删除

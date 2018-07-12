@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'dva/router';
 import classNames from 'classnames/bind';
 import PersonItem from '../PersonItem';
-// import {getPersonList} from '../../action';
 
 import style from './style.scss';
 import { connect } from 'dva';
@@ -34,11 +33,8 @@ export default class PersonList extends Component {
   // 加载更多
   loadMore = () => {
     const {person, dispatch} = this.props;
-    // const {dispatch} = this.props;
-    // const isFetching = loading.get('isFetching');
     const pageNum = person.get('pageNum');
     const totalPages = person.get('totalPages');
-    // const lastPage = paging.get('lastPage');
     if (pageNum < totalPages) {
       dispatch({type: 'person/getPersonList'});
     }

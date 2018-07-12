@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {Route, Switch} from 'react-router-dom';
-import {connect} from 'react-redux';
 import Loadable from 'react-loadable';
 import LoadingComponent from '../../../../../components/LoadingComponent';
 
-@connect()
 export default class Person extends Component {
   static propTypes = {
     match: PropTypes.object,

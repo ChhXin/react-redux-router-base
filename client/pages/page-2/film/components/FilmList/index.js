@@ -9,7 +9,6 @@ const FilmList = ({film, activeTab}) => {
   const popularityFilmList = film.get('popularity');
 
   const filmList = activeTab === 'all' ? allFilmList : popularityFilmList;
-  // const items = filmList.get('items');
 
   if (!filmList) {
     return null;

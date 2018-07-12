@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import callApi from '../../../../../utils/fetch';
-import {addPerson} from '../../action';
+import { connect } from 'dva';
+import callApiWithHeader from '../../../../../utils/fetch';
 
 import style from './style.scss';
 
 const cx = classNames.bind(style);
-
+// 采用装饰器处理
+@connect()
 export default class PersonForm extends Component {
   static contextTypes = {
     router: PropTypes.object.isRequired,
+  };
+
+  static propTypes = {
     dispatch: PropTypes.func,
   };
 
@@ -25,9 +29,10 @@ export default class PersonForm extends Component {
   savePerson = () => {
     const {firstName, lastName} = this.state;
     const url = 'page-2/person';
-    const {dispatch, router} = this.context;
+    const {dispatch} = this.props;
+    const { router} = this.context;
     // 这里没有走 action, 直接发送 fetch 请求,对于不需要维护状态的请求,我们也可以直接调用 fetch
-    return callApi({
+    return callApiWithHeader({
       url,
       body: {
         firstName,
