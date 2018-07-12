@@ -28,35 +28,13 @@ export default class PersonForm extends Component {
 
   savePerson = () => {
     const {firstName, lastName} = this.state;
-    const url = 'page-2/person';
-    const {dispatch} = this.props;
-    const { router} = this.context;
-    // 这里没有走 action, 直接发送 fetch 请求,对于不需要维护状态的请求,我们也可以直接调用 fetch
-    return callApiWithHeader({
-      url,
-      body: {
-        firstName,
-        lastName,
-      },
-      method: 'post',
-    }).then(
-      (json) => {
-        const {data} = json;
-        const person = {
-          id: data.id,
-          firstName,
-          lastName,
-        };
-        dispatch({
-          type: 'person/addPerson',
-          payload: { person },
-        });
-        router.history.goBack();
-      },
-      (error) => {
 
-      },
-    );
+    this.props.dispatch({
+      type: 'person/addPerson',
+      payload: { firstName, lastName },
+    });
+
+    this.goBack();
   };
 
   goBack = () => {

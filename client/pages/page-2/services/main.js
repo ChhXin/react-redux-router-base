@@ -10,6 +10,26 @@ export function person({ body = {} }) {
   });
 }
 
+export function savePerson({ body = {} }) {
+  return callApiWithHeader({
+    url: 'page-2/person',
+    body,
+    options: {
+      method: 'post',
+    },
+  });
+}
+
+export function deletePerson({ body = {} }) {
+  return callApiWithHeader({
+    url: 'page-2/person',
+    body,
+    options: {
+      method: 'delete',
+    },
+  });
+}
+
 export function film({ body = {} }) {
   const {type} = body;
   return callApiWithHeader({

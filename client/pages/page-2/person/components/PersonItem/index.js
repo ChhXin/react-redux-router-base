@@ -42,51 +42,27 @@ class PersonItem extends Component {
   // 保存
   handleSave = (e) => {
     e.preventDefault();
-    const {dispatch} = this.props;
-    const url = 'page-2/person';
-    const body = this.state.person.toJSON();
+    const {person} = this.state;
+    this.props.dispatch({
+      type: 'person/updatePerson',
+      payload: { person },
+    })
 
-    return callApiWithHeader({
-      url, body, method: 'post'
-    }).then(
-      (json) => {
-        const {person} = this.state;
-        dispatch({
-          type: 'person/updatePerson',
-          payload: { person },
-        })
-        this.setState({
-          editing: false
-        }, () => {
-          this.personDefault = person;
-        });
-      },
-      (error) => {
-      }
-    );
+    this.setState({
+      editing: false
+    }, () => {
+      this.personDefault = person;
+    });
   };
 
   handleDelete = (id) => {
     return (e) => {
       e.preventDefault();
-      const {dispatch} = this.props;
-      const url = 'page-2/person';
-      return callApiWithHeader({
-        url,
-        body: {
-          id
-        }, method: 'delete'
-      }).then(
-        (json) => {
-          dispatch({
-            type: 'person/deletePerson',
-            payload: { id },
-          });
-        },
-        (error) => {
 
-        }
-      );
+      this.props.dispatch({
+        type: 'person/deletePerson',
+        payload: { id },
+      });
     }
   };
 

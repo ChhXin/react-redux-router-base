@@ -49,7 +49,7 @@ export default {
     },
 
     // 修改
-    updatePerson(
+    update(
       state,
       {
         payload: { person },
@@ -64,7 +64,7 @@ export default {
     },
 
     // 删除
-    deletePerson(
+    delete(
       state,
       {
         payload: { id },
@@ -74,7 +74,7 @@ export default {
     },
 
     // 添加一列
-    addPerson(
+    add(
       state,
       {
         payload: { person },
@@ -104,6 +104,47 @@ export default {
           payload: { data: { ...data, pageNum: pageNum + 1 } },
         });
       }
+    },
+    *addPerson({ payload = {} }, { call, put, select }) {
+
+      const { data } = yield call(mainService.savePerson, {
+        body: { ...payload },
+      });
+
+      yield put({
+        type: 'add',
+        payload: {
+          person: {
+            id: data.id,
+            ...payload
+          }
+        },
+      });
+    },
+    *updatePerson({ payload = {} }, { call, put, select }) {
+      const {person} = payload;
+
+      yield call(mainService.savePerson, {
+        body: person,
+      });
+
+      yield put({
+        type: 'update',
+        payload: {
+          person
+        },
+      });
+    },
+    *deletePerson({ payload = {} }, { call, put, select }) {
+
+      yield call(mainService.deletePerson, {
+        body: payload,
+      });
+
+      yield put({
+        type: 'delete',
+        payload,
+      });
     },
   },
 };
