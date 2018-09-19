@@ -78,7 +78,7 @@ function scssConfig(modules) {
       },
     },
     {
-      loader: 'sass-loader-joy-vendor',
+      loader: 'sass-loader',
       options: {
         sourceMap: true, // 必须保留
         modules,

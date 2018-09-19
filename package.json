@@ -44,7 +44,6 @@
     "classnames": "^2.2.6",
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
-    "digger-node": "^1.0.4",
     "dva": "^2.4.0",
     "dva-loading": "^2.0.5",
     "express": "^4.16.3",
@@ -70,7 +69,8 @@
     "react-transition-group": "^2.4.0",
     "request": "^2.88.0",
     "serialize-javascript": "^1.5.0",
-    "serve-favicon": "^2.5.0"
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.1",
@@ -112,7 +112,7 @@
     "mini-css-extract-plugin": "^0.4.2",
     "mock-css-modules": "^1.0.0",
     "nock": "^9.6.1",
-    "node-sass-vendor": "^4.9.4",
+    "node-sass": "^4.9.3",
     "nodemon": "^1.18.4",
     "npm-run-all": "^4.1.3",
     "nyc": "^13.0.1",
@@ -123,7 +123,7 @@
     "redux-logger": "^3.0.6",
     "resolve-url-loader": "^2.3.1",
     "rimraf": "^2.6.2",
-    "sass-loader-joy-vendor": "^7.1.2",
+    "sass-loader": "^7.1.0",
     "sinon": "^6.3.1",
     "style-loader": "^0.23.0",
     "stylelint": "^9.5.0",

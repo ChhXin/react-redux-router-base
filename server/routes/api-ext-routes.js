@@ -3,7 +3,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const logger = require('digger-node').Logger;
+const logger = require('../third-party/digger-node').Logger;
 const { URL_CONTEXT } = require('../../common/constants');
 
 const rootPath = path.join(__dirname);

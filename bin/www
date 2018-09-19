@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const http = require('http');
-const logger = require('digger-node').Logger;
+const logger = require('../server/third-party/digger-node').Logger;
 const config = require('../server/config');
 const app = require('../server');
 

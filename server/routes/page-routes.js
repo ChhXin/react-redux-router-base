@@ -6,9 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const serialize = require('serialize-javascript');
 const handlebars = require('handlebars');
-const logger = require('digger-node').Logger;
-const service = require('../service/common');
-const wrapData = require('../helper/utils').wrapData;
+const logger = require('../third-party/digger-node').Logger;
 const { URL_CONTEXT } = require('../../common/constants');
 
 // environment

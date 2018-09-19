@@ -5,7 +5,7 @@
 const path = require('path');
 const fs = require('fs');
 const request = require('request'); // enable cookie
-const logger = require('digger-node').Logger;
+const logger = require('../third-party/digger-node').Logger;
 const multer = require('multer');
 const { RES_CODE, RES_DATA, RES_MSG } = require('../../common/constants');
 

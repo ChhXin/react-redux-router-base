@@ -76,7 +76,7 @@ function scssConfig(modules) {
       loader: 'resolve-url-loader',
     },
     {
-      loader: 'sass-loader-joy-vendor',
+      loader: 'sass-loader',
       options: {
         sourceMap: true, // 必须保留
         modules,
